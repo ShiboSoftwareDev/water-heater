@@ -69,7 +69,7 @@ const Main = () => {
         className={`w-12 h-12 ${
           water.temperature < 80
             ? "bg-green-700 border-green-950"
-            : "bg-red-700 border-red-950"
+            : "bg-red-700 border-red-950 animate-custom"
         }`}
       ></div>
     </main>

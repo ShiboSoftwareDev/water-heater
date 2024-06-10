@@ -7,9 +7,28 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+let interval: NodeJS.Timeout;
+let initial = false;
+
 const handlePlaySound = (e: Electron.IpcMainEvent, command: boolean) => {
   console.log(command);
-  if (command) sound.play("../../assets/sound/alarm.mp3");
+
+  if (command) {
+    if (!initial) {
+      initial = true;
+      interval = setInterval(() => {
+        console.log("alarm");
+        sound.play(
+          path.join(__dirname, "..", "..", "assets", "sound", "alarm.mp3"),
+          1
+        );
+      }, 550);
+    }
+  } else {
+    initial = false;
+    clearInterval(interval);
+  }
+
   return;
 };
 ipcMain.on("electronAPI:playSound", handlePlaySound);
