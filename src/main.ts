@@ -11,24 +11,20 @@ let interval: NodeJS.Timeout;
 let initial = false;
 
 const handlePlaySound = (e: Electron.IpcMainEvent, command: boolean) => {
-  console.log(command);
-
   if (command) {
     if (!initial) {
       initial = true;
       interval = setInterval(() => {
-        console.log("alarm");
         sound.play(
           path.join(__dirname, "..", "..", "assets", "sound", "alarm.mp3"),
           1
         );
-      }, 550);
+      }, 450);
     }
   } else {
     initial = false;
     clearInterval(interval);
   }
-
   return;
 };
 ipcMain.on("electronAPI:playSound", handlePlaySound);
@@ -36,8 +32,11 @@ ipcMain.on("electronAPI:playSound", handlePlaySound);
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 2200,
+    height: 2200,
+    resizable: false,
+
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -53,7 +52,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
